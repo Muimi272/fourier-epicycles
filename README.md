@@ -6,29 +6,25 @@
 
 用浏览器打开 `public/index.html`，无需构建。
 
-## Cloudflare Pages
+## Cloudflare 部署
 
-仓库已按 Pages 静态站点整理：入口是 `public/index.html`，无需安装依赖、无需构建命令。
+静态资源在 `public/`，**没有构建步骤**。
 
-### 控制台连接 GitHub
+### 若控制台里有 Deploy command（Workers / 新版界面）
 
-1. 打开 [Cloudflare Dashboard](https://dash.cloudflare.com/) → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**。
-2. 选择仓库 `Muimi272/fourier-epicycles`，分支 `main`。
-3. 构建设置：
-   - **Framework preset**：`None`
-   - **Build command**：留空
-   - **Build output directory**：`public`
-   - **Root directory**：留空（仓库根目录）
-4. 保存并部署。之后推送到 `main` 会自动发布。
+日志里如果出现 `Executing user deploy command: npx wrangler deploy`，保持：
 
-自定义域名在该 Pages 项目的 **Custom domains** 里添加即可。
+- **Deploy command**：`npx wrangler deploy`
+- 不要留空，也不要改成 `wrangler pages deploy`
 
-### 命令行（可选）
+仓库里的 `wrangler.toml` 已声明 `[assets].directory = "./public"`，这条命令会直接上传静态文件。
 
-已登录 Wrangler 时，在仓库根目录执行：
+### 若是经典 Pages（Build command + Output directory）
 
-```bash
-npx wrangler pages deploy public --project-name fourier-epicycles
-```
+- **Framework preset**：`None`
+- **Build command**：留空（不要填 `npx wrangler deploy`）
+- **Build output directory**：`public`
 
-`wrangler.toml` 里的 `pages_build_output_dir = "public"` 与上述输出目录一致。
+`npx wrangler deploy` 是 Workers 部署命令。在经典 Pages 项目上跑它会报 *Missing entry-point to Worker script*。
+
+自定义域名在项目的 **Custom domains** 里添加。

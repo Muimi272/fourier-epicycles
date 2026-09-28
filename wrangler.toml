@@ -1,3 +1,10 @@
 name = "fourier-epicycles"
 compatibility_date = "2026-09-28"
-pages_build_output_dir = "public"
+
+# Static site. Cloudflare Git 部署请使用：
+# Deploy command: npx wrangler deploy
+# 不要用 pages_build_output_dir + wrangler deploy（那是 Pages 专用字段）。
+[assets]
+directory = "./public"
+not_found_handling = "404-page"
+html_handling = "auto-trailing-slash"
